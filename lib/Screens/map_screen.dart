@@ -37,12 +37,15 @@ class _MapScreenState extends State<MapScreen> {
     if (serviceEnable) {
       serviceEnable = await locationController.requestService();
     } else {
+      print("Not granted");
+
       return;
     }
     permissionGranted = await locationController.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await locationController.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
+        print("Not granteaad");
         return;
       }
     }
@@ -64,36 +67,46 @@ class _MapScreenState extends State<MapScreen> {
     const LatLng myLocation = LatLng(24.860966, 66.990501);
     const LatLng newLocation = LatLng(24.860966, 66.990501);
     const LatLng sourceLocation = LatLng(24.8773, 67.1591);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("MAp"),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blueAccent,
+          toolbarHeight: 70,
+          title: Text(
+            "Google Map",
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ),
+        body:
+            //  cPosition == null
+            //     ? Center(
+            //         child: CircularProgressIndicator(),
+            //       )
+            //     :
+            GoogleMap(
+          onMapCreated: ((GoogleMapController controller) =>
+              mapController.complete(controller)),
+          initialCameraPosition: CameraPosition(
+            target: myLocation,
+            zoom: 13,
+          ),
+          markers: {
+            Marker(
+                markerId: MarkerId("_myLocation"),
+                icon: BitmapDescriptor.defaultMarker,
+                position: cPosition!),
+            Marker(
+                markerId: MarkerId("_currentLocation"),
+                icon: BitmapDescriptor.defaultMarker,
+                position: newLocation),
+            Marker(
+                markerId: MarkerId("_sourceLocation"),
+                icon: BitmapDescriptor.defaultMarker,
+                position: sourceLocation),
+          },
+        ),
       ),
-      body: cPosition == null
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : GoogleMap(
-              onMapCreated: ((GoogleMapController controller) =>
-                  mapController.complete(controller)),
-              initialCameraPosition: CameraPosition(
-                target: myLocation,
-                zoom: 13,
-              ),
-              markers: {
-                Marker(
-                    markerId: MarkerId("_myLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: cPosition!),
-                Marker(
-                    markerId: MarkerId("_currentLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: newLocation),
-                Marker(
-                    markerId: MarkerId("_sourceLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: sourceLocation),
-              },
-            ),
     );
   }
 }
