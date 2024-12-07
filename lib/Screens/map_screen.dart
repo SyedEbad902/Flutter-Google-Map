@@ -79,11 +79,7 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ),
         body:
-            //  cPosition == null
-            //     ? Center(
-            //         child: CircularProgressIndicator(),
-            //       )
-            //     :
+
             GoogleMap(
           onMapCreated: ((GoogleMapController controller) =>
               mapController.complete(controller)),
