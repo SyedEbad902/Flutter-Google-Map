@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -45,7 +44,7 @@ class _MapScreenState extends State<MapScreen> {
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await locationController.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
-        print("Not granteaad");
+        print("Not granted");
         return;
       }
     }
@@ -73,7 +72,7 @@ class _MapScreenState extends State<MapScreen> {
           backgroundColor: Colors.blueAccent,
           toolbarHeight: 70,
           title: Text(
-            "Google Map",
+            "Google Map ",
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           ),
